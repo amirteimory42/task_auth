@@ -1,79 +1,68 @@
-import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+import { Given, When, Then} from 'cypress-cucumber-preprocessor/steps';
 
-// سناریوی ثبت‌نام
-Given('the user is on the signup page', () => {
-    cy.visit('cypress/support/signUp/signup.html'); // مسیر صفحه‌ی ثبت‌نام
+Given('I am on the signup page', () => {
+  cy.visit('/cypress/support/signUp/signup.html');
 });
 
-When('the user fills in the {string} field with {string}', (field, value) => {
-    const fieldSelector = {
-        'Email': '#email',
-        'First Name': '#firstname',
-        'Last Name': '#lastname',
-        'Birthdate': '#birthdate',
-        'Phone Number': '#phone',
-        'Password': '#password',
-        'Confirm Password': '#password-confirm'
-    };
-    cy.get(fieldSelector[field]).type(value);
+When('I enter my email as {string}', (email) => {
+  cy.get('#email').type(email);
 });
 
-When('the user clicks on the "Sign Up" button', () => {
-    cy.get('button[type="submit"]').click();
+When('I enter my first name as {string}', (firstname) => {
+  cy.get('#firstname').type(firstname);
 });
 
-Then('the user should see an alert with the message {string}', (message) => {
-    cy.on('window:alert', (text) => {
-        expect(text).to.contains(message);
-    });
+When('I enter my last name as {string}', (lastname) => {
+  cy.get('#lastname').type(lastname);
 });
 
-Then('the user should be redirected to the login page', () => {
-    cy.url().should('include', 'cypress/support/login/login.html');
+When('I enter my birthdate as {string}', (birthdate) => {
+  cy.get('#birthdate').type(birthdate);
 });
 
-// سناریوی ورود
-Given('the user is on the login page', () => {
-    cy.visit('cypress/support/login/login.html'); // مسیر صفحه‌ی ورود
+When('I enter my phone number as {string}', (phone) => {
+  cy.get('#phone').type(phone);
 });
 
-Given('a user with email {string} and password {string} exists', (email, password) => {
-    const users = [{ email, password }];
-    localStorage.setItem('users', JSON.stringify(users));
+When('I enter my password as {string}', (password) => {
+  cy.get('#password').type(password);
 });
 
-When('the user fills in the {string} field with {string}', (field, value) => {
-    const loginFieldSelector = {
-        'Email': '#login-email',
-        'Password': '#login-password'
-    };
-    cy.get(loginFieldSelector[field]).type(value);
+When('I confirm my password as {string}', (password) => {
+  cy.get('#Password-confirm').type(password);
 });
 
-When('the user clicks on the "Log In" button', () => {
-    cy.get('button[type="submit"]').click();
+When('I submit the signup form', () => {
+  cy.get('button[type="submit"]').contains('Sign Up').click();
 });
 
-Then('the user should be redirected to the dashboard page', () => {
-    cy.url().should('include', 'cypress/support/dashboard/dashboard.html');
+Then('I should see a confirmation message', () => {
+  
 });
 
-// سناریوی خروج از حساب
-Given('the user is logged in and on the dashboard page', () => {
-    localStorage.setItem('loggedInUser', 'user@example.com');
-    cy.visit('cypress/support/dashboard/dashboard.html'); // مسیر صفحه‌ی داشبورد
+Given('I am on the login page', () => {
+  cy.get('#login-email').type('user@example.com');
+   cy.get('#login-password').type('password123');
+
 });
 
-When('the user clicks on the "Sign Out" button', () => {
-    cy.get('#sign-out-button').click();
+When('I submit the login form', () => {
+  cy.get('button').click();
 });
 
-Then('the user should be redirected to the login page', () => {
-    cy.url().should('include', 'cypress/support/login/login.html');
+Then('I should be redirected to the dashboard', () => {
+  
 });
 
-Then('the "loggedInUser" property should be removed from local storage', () => {
-    cy.window().then((win) => {
-        expect(win.localStorage.getItem('loggedInUser')).to.be.null;
-    });
+Given('I am logged in', () => {
+  
 });
+
+When('I click the sign-out button', () => {
+  cy.get('#sign-out-button').click();
+});
+
+Then('I should be redirected to the homepage', () => {
+ 
+});
+
